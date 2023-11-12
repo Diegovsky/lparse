@@ -4,6 +4,8 @@ known, to optimize a 30 minute task (writing latex docs) into a minute or less!
 
 The language itself took 48 hours to create, so obviously it was well worth it!
 
+!["example image"](examples/simple.png)
+
 ## How to use it
 `LParse` transforms its input into a `.tex` file containing valid `LaTeX`. You
 can then turn this document into a PDF, web page, etc. using the many available
@@ -15,6 +17,7 @@ Every document has the following structure:
 author: <Your name>
 title: <Your document's title>
 date: <Any string you want to be shown as a date>
+default_clause: <Default method name. If you don't specify, it's "Arg">
 
 [<section name>]
 1) <equation> | <additional info>
@@ -48,6 +51,16 @@ Can contain anything other than square brackets (`[]`). Will be shown in the
 final output suffixed by a `)`, followed by the corresponding arguments, conclusion, etc.
   - `1-b` -> `1-b)`
   - `proof of concept` -> `proof of concept)`
+
+### `additional_info`
+Anything you want to be shown after the equation. Usually, it's the method used
+to derive the argument. Must be inside a paranthesis (`()`)
+```
+[Modus ponens]
+1) p(x) -> q(x) | Premise
+2) p(x) | Premise
+3) q(x) | (M.p 1, 2)
+```
 
 ### config
 The config section has special syntax which associates names (keys) with values.

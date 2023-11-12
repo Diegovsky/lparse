@@ -164,6 +164,7 @@ struct LatexParams<'a> {
     title: &'a str,
     author: &'a str,
     date: &'a str,
+    default_clause: &'a str,
     sections: Vec<Section<'a>>,
 }
 
@@ -177,6 +178,7 @@ struct Section<'a> {
 fn parse_header<'a>(header: Pair<'a, Rule>) -> PestResult<LatexParams> {
     assert_eq!(header.as_rule(), Rule::header);
     const CONFIG_KEY_NAME: &str = "config";
+    let span = header.as_span();
     let ([label], lines) = pairs_into_array_excess(header, "header args")?;
     let [label] = pairs_into_array(label, "header label args")?;
     let label_value = label.as_str();
@@ -188,7 +190,7 @@ fn parse_header<'a>(header: Pair<'a, Rule>) -> PestResult<LatexParams> {
         assert_eq!(line.as_rule(), Rule::header_line);
         let [key, value] = pairs_into_array(line, "header_line args")?;
         match key.as_str() {
-            "title" | "date" | "author" => (),
+            "title" | "date" | "author" | "default_clause" => (),
             _ => return Err(custom_error(format!("Invalid configuration key '{}'", key.as_str()), key.as_span())),
         };
         if keys.contains_key(&key.as_str()) {
@@ -198,10 +200,12 @@ fn parse_header<'a>(header: Pair<'a, Rule>) -> PestResult<LatexParams> {
         let value = value.as_str();
         keys.insert(key, value.trim());
     }
+    let get_value = |key: &str| keys.get(key).ok_or_else(move || custom_error(format!("Missing configuration key '{}'", key), span));
     Ok(LatexParams {
-        title: keys["title"],
-        date: keys["date"],
-        author: keys["author"],
+        title: get_value("title")?,
+        date: get_value("date")?,
+        author: get_value("author")?,
+        default_clause: keys.get("default_clause").unwrap_or_else(|| &"Arg"),
         sections: vec![]
     })
 }

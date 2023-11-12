@@ -2,5 +2,5 @@
 *.aux
 *.log
 *.pdf
-output.tex
-input.txt
+**/output.tex
+**/*.txt

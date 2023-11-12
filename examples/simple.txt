@@ -1,0 +1,11 @@
+[config]
+title: Example
+author: Diego Augusto
+date: 1984
+
+[Proof that I am mortal]
+1) @x (human(x) -> mortal(x))
+2) human(Diego)
+3) human(x) -> mortal(x) | (U.I 1)
+4) mortal(Diego) | (M.P 2,3)
+|= mortal(Diego)
