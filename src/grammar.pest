@@ -1,7 +1,7 @@
 // [Utility definitions]
 
 WHITESPACE = _{ " " }
-EOL = _{ NEWLINE+ }
+EOL = _{ WHITESPACE* ~ NEWLINE+ }
 // This should cover 99% of use cases
 UNICODE_CHAR = { '\u{21}'..'\u{27}' | '\u{2a}'..'\u{5A}' | '\u{5E}'..'\u{7E}' | '\u{BF}'..'\u{FE}' | '\u{100}'..'\u{17E}'
 | '\u{180}'..'\u{24e}'}
