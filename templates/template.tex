@@ -1,0 +1,37 @@
+\documentclass{article}
+
+\title{ {{- title -}} }
+\date{ {{- date -}} }
+\author{ {{- author -}} }
+
+\usepackage{enumitem}
+
+\newenvironment{args}
+    {
+        \begin{enumerate}[label=\arabic*.]
+    }
+    {
+        \end{enumerate}
+    }
+\newcommand{\argument}[2][Premissa]{$#2$\hfill(#1)}
+\newcommand{\pred}[2]{\textnormal{#1}(#2)}
+\newcommand{\conclusion}[1]{$\models #1$}
+
+\begin{document}
+    \pagenumbering{arabic}
+
+    \maketitle
+    \newpage
+    \begin{itemize}
+        {% for section in sections %}
+        \item {{section.label-}})
+            \begin{enumerate}[label=\arabic*.]
+                {% for argument in section.args -%}
+                \item {{ argument }}
+                {% endfor %}
+            \end{enumerate}
+            {{ section.conclusion }}
+        {% endfor %}
+    \end{itemize}
+
+\end{document}

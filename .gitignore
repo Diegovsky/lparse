@@ -1,0 +1,6 @@
+/target
+*.aux
+*.log
+*.pdf
+output.tex
+input.txt

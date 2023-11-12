@@ -1,0 +1,42 @@
+// [Utility definitions]
+
+WHITESPACE = _{ " " }
+EOL = _{ NEWLINE+ }
+// This should cover 99% of use cases
+UNICODE_CHAR = { '\u{21}'..'\u{27}' | '\u{2a}'..'\u{5A}' | '\u{5E}'..'\u{7E}' | '\u{BF}'..'\u{FE}' | '\u{100}'..'\u{17E}'
+| '\u{180}'..'\u{24e}'}
+PARENS = { "("|")" }
+BRACKETS = { "["|"]" }
+
+// [Logic]
+bioperator = { "->" | "^" | "V" | "v" }
+existencial = { "@" | "&" }
+
+operand = @{ (ASCII_ALPHANUMERIC | "_" | "-")+ }
+existencial_expr = { existencial ~ operand ~ subexpr }
+func = { operand ~ "(" ~ (expr ~ ","?)* ~ ")"}
+neg = { "~" ~ expr }
+subexpr = { "(" ~ expr ~ ")" | "[" ~ expr ~ "]" }
+
+expr = { (func | operand | existencial_expr | subexpr | neg) ~ (bioperator ~ expr)? }
+exprs = { expr* }
+num = { ASCII_DIGIT+ }
+line_ext = { (UNICODE_CHAR | BRACKETS | WHITESPACE)+ }
+
+arg = !{ num ~ ")" ~ exprs ~ ("|" ~ ( "(" ~ line_ext ~ ")"))? }
+conclusion = !{ "|=" ~ exprs }
+
+// [Document structure]
+section = { label ~ EOL ~ (arg ~ EOL)+ ~ conclusion ~ EOL }
+
+label_value = @{ (UNICODE_CHAR | WHITESPACE | PARENS )+ }
+label = ${ "[" ~ label_value ~ "]"}
+
+/// [Header]
+header_key = @{ ASCII_ALPHANUMERIC+}
+header_char = @{ UNICODE_CHAR | BRACKETS | PARENS }
+header_value = ${ header_char~(header_char | " ")* }
+header_line = !{ header_key ~ ":" ~ header_value ~ EOL }
+header = !{ label ~ EOL ~ header_line+ ~ &label  }
+
+root = @{ header ~ (section)+ }

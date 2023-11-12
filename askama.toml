@@ -1,0 +1,11 @@
+[general]
+default_syntax = "tex"
+
+[[syntax]]
+name = "tex"
+comment_start = "/*"
+comment_end = "*/"
+
+[[escaper]]
+path = "::tex_escape::Tex"
+extensions = ["tex"]
