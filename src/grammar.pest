@@ -39,4 +39,4 @@ header_value = ${ header_char~(header_char | " ")* }
 header_line = !{ header_key ~ ":" ~ header_value ~ EOL }
 header = !{ label ~ EOL ~ header_line+ ~ &label  }
 
-root = @{ header ~ (section)+ }
+root = @{ header ~ (section)+ ~ EOI }
