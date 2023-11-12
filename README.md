@@ -5,6 +5,10 @@ known, to optimize a 30 minute task (writing latex docs) into a minute or less!
 The language itself took 48 hours to create, so obviously it was well worth it!
 
 ## How to use it
+`LParse` transforms its input into a `.tex` file containing valid `LaTeX`. You
+can then turn this document into a PDF, web page, etc. using the many available
+`LaTeX` renderers.
+
 Every document has the following structure:
 ```
 [config]
